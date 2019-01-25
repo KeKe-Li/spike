@@ -2,7 +2,7 @@
 用的是Golang 1.112版本的go module,配合Golang的web框架gin实现的.
 
 <p align="center">
-<img width="100%" align="center" src="public/images/logo.png" />
+<img width="200" align="center" src="public/images/logo.png" />
 </p>
 
 <p align='center'>
