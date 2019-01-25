@@ -3,7 +3,7 @@
 
 #### docker
 
-```markdown
+```docker
 #母镜像
 FROM golang
 #维护者信息
