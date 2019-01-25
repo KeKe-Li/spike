@@ -1,0 +1,17 @@
+
+ENV = "debug"
+Port = "8000"
+Sqlite = "sqlite"
+
+[Mysql]
+  Type = ""
+  UserName = "root"
+  Password = "hadoop"
+  Database = "spike"
+  Address = ""
+  Parameters = "charset=utf8&parseTime=True&loc=Local"
+  MaxIdle = 10
+  MaxOpen = 100
+  Debug = true
+  MigrationsDir = "/path/to/db/migrations"
+

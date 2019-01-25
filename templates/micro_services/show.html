@@ -1,0 +1,49 @@
+<div class="container">
+	<h4>Show MicroService</h4>
+	<h4><a href="/micro-services" class="btn btn-default">back</a></h4>
+<div class="table-responsive ">
+<table class="table wrapper-color">
+    <tr>
+        
+        <th>CreatedAt</th>
+        
+        <th>DeletedAt</th>
+        
+        <th>ID</th>
+        
+        <th>Name</th>
+        
+        <th>Remark</th>
+        
+        <th>Summary</th>
+        
+        <th>UpdatedAt</th>
+        
+        <th>Version</th>
+        
+    </tr>
+    {{with .microService}}
+    <tr>
+        <td><a href="/micro-services-show/{{.ID}}" class="btn btn-link">{{.ID}}</a></td>
+        
+        <td>{{.CreatedAt}}</td>
+        
+        <td>{{.DeletedAt}}</td>
+        
+        <td>{{.Name}}</td>
+        
+        <td>{{.Remark}}</td>
+        
+        <td>{{.RemoteKey}}</td>
+        
+        <td>{{.Summary}}</td>
+        
+        <td>{{.UpdatedAt}}</td>
+        
+        <td>{{.Version}}</td>
+        
+    </tr>
+    {{end}}
+</table>
+</div>
+</div>

@@ -1,0 +1,132 @@
+<div class="content">
+    <!-- BEGIN LOGIN FORM -->
+    <form id="service" action="/gpg-keys/{{.msid}}" class="wrapper-color" method="POST">
+        <h2>MicroService:{{.msName}}</h2>
+        <div class="form-group">
+            <input class="form-control  placeholder-no-fix" type="text" autocomplete="off"
+                   id="name" placeholder="name" name="name"/>
+        </div>
+
+        <div class="form-group">
+            <input class="form-control  placeholder-no-fix" type="text" autocomplete="off"
+                   id="comment" placeholder="comment" name="comment"/>
+        </div>
+
+        <div class="form-group">
+            <input class="form-control placeholder-no-fix" type="email" autocomplete="off"
+                   id="email" placeholder="email" name="email"/>
+        </div>
+
+        <div class="form-group">
+            <textarea class="form-control" id="config" placeholder="config" style="min-height: 90px;"></textarea>
+        </div>
+
+        <div class="form-group">
+            <input class="form-control placeholder-no-fix" type="text" autocomplete="off"
+                   id="remoteKey" placeholder="remoteKey" name="remoteKey"/>
+        </div>
+        <div class="form-group">
+            <input class="form-control placeholder-no-fix" type="text" autocomplete="off"
+                   id="endPoint" placeholder="endPoint" name="endPoint"/>
+        </div>
+
+        <div class="form-group">
+            <input class="form-control placeholder-no-fix" type="text" autocomplete="off"
+                   id="version" placeholder="version" name="version"/>
+        </div>
+        <div class="form-group" style="display: none;">
+            <label><input type="radio" class="armor wrapper-color" name="armor" value="0" checked>是</label>
+            <label><input type="radio" class="armor wrapper-color" name="armor" value="1">否</label>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-info form-submit">Create</button>
+            <button type="button" class="btn green form-submit form-back">Back</button>
+        </div>
+    </form>
+    <!-- END LOGIN FORM -->
+
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#service").on('submit', function (e) {
+            e.preventDefault();
+
+            var data = {};
+            data.name = $("#name").val();
+            data.comment = $("#comment").val();
+            data.email = $("#email").val();
+            data.armor = $("input[name='armor']:checked").val();
+            data.config = $("#config").val();
+            data.remoteKey = $("#remoteKey").val();
+            data.endPoint = $("#endPoint").val();
+            data.version = $("#version").val();
+
+            if ($("#name").val() == "") {
+                toastr.warning("请输入名称!");
+                $("#name").focus();
+                return false
+            }
+
+            if ($("#comment").val() == "") {
+                toastr.warning("请输入评论!");
+                $("#comment").focus();
+                return false
+            }
+
+            if ($("#email").val() == "") {
+                toastr.warning("请输入邮箱!");
+                $("#email").focus();
+                return false
+            }
+
+            if ($('input[name="armor"]:checked').val() == "") {
+                toastr.warning("请选择是或否！");
+                $('input[name="armor"]:checked').focus();
+                return false
+            }
+
+            if ($("#config").val() == "") {
+                toastr.warning("请输入邮箱!");
+                $("#config").focus();
+                return false
+            }
+
+            if ($("#remoteKey").val() == "") {
+                toastr.warning("请输入remoteKey!");
+                $("#remoteKey").focus();
+                return false
+            }
+
+            if ($("#version").val() == "") {
+                toastr.warning("请输入version!");
+                $("#version").focus();
+                return false
+            }
+
+            $.ajax({
+                url: this.action,
+                type: 'POST',
+                data: data,
+                success: function (data, textStatus, jqXHR) {
+                    if (data.error_code == 0) {
+                        toastr.success("Succeed");
+                        window.location.href = "/gpg-keys-show/" + "{{.msid}}";
+                    } else {
+                        toastr.error(data.error_message);
+                    }
+                },
+                error: function (jqXHR, error, errorThrown) {
+
+                }
+            });
+            return false;
+        });
+
+        $(".form-back").on("click", function () {
+            window.location.href = "/gpg-keys-show/" + "{{.msid}}"
+        })
+    });
+</script>

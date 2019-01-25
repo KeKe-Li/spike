@@ -1,0 +1,22 @@
+version: "2"
+services:
+  spike:
+    image: spike
+    container_name: spike
+    env_file: .env
+    ports:
+      - 80:80
+    links:
+      - mysql
+    volumes:
+      - .:/var/www/html
+
+  mysql:
+    image: mysql
+    container_name: spike-mysql
+    env_file: .env
+    ports:
+      - 3306:3306
+    volumes:
+      - /tmp/data/admin/mysql:/var/lib/mysql
+      - ./database/initdb:/docker-entrypoint-initdb.d

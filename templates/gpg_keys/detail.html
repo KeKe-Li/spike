@@ -1,0 +1,21 @@
+<div class="container">
+    <h4 class="wrapper-color">PubRing and SecRing</h4>
+    <div class="table-responsive wrapper-color">
+        <table class="table">
+            <tr>
+                <th>PubRing </th>
+
+                <th>SecRing</th>
+            </tr>
+            {{with .gpgKey}}
+            <tr>
+                <td>{{.PubRing}}</td>
+
+                <td>{{.SecRing}}</td>
+
+            </tr>
+
+            {{end}}
+        </table>
+    </div>
+</div>

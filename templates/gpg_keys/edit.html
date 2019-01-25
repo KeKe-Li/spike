@@ -1,0 +1,110 @@
+<div class="container">
+    <h4>Edit GpgKey</h4>
+    <h4><a href="/gpg-keys" class="btn btn-default">back</a></h4>
+{{with .gpgKey}}
+<form  id="editGpgKey" class="form-horizontal" action="/gpg-keys/{{.ID}}" method="post">
+        <div class="form-group">
+            <label for="armor">Armor</label>
+                <input id="armor" type="text" class="form-control"  name="armor"  value="{{.Armor}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="comment">Comment</label>
+                <input id="comment" type="text" class="form-control"  name="comment"  value="{{.Comment}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="createdAt">CreatedAt</label>
+                <input id="createdAt" type="text" class="form-control"  name="createdAt"  value="{{.CreatedAt}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="deletedAt">DeletedAt</label>
+                <input id="deletedAt" type="text" class="form-control"  name="deletedAt"  value="{{.DeletedAt}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+                <input id="email" type="text" class="form-control"  name="email"  value="{{.Email}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="microServiceId">MicroServiceID</label>
+                <input id="microServiceId" type="text" class="form-control"  name="microServiceId"  value="{{.MicroServiceID}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="name">Name</label>
+                <input id="name" type="text" class="form-control"  name="name"  value="{{.Name}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="pubRing">PubRing</label>
+                <input id="pubRing" type="text" class="form-control"  name="pubRing"  value="{{.PubRing}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="secRing">SecRing</label>
+                <input id="secRing" type="text" class="form-control"  name="secRing"  value="{{.SecRing}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="service">Service</label>
+                <input id="service" type="text" class="form-control"  name="service"  value="{{.Service}}">
+        </div>
+        
+        <div class="form-group">
+            <label for="updatedAt">UpdatedAt</label>
+                <input id="updatedAt" type="text" class="form-control"  name="updatedAt"  value="{{.UpdatedAt}}">
+        </div>
+        
+        <div class="form-group">
+                <button type="submit" class="btn btn-default">Update</button>
+        </div>
+
+</form>
+{{end}}
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#editGpgKey').on('submit', function(e){
+            e.preventDefault();
+
+            var data = {};
+            
+            data.armor = $('#armor').val();
+            data.comment = $('#comment').val();
+            data.email = $('#email').val();
+            data.microServiceId = $('#microServiceId').val();
+            data.name = $('#name').val();
+            data.pubRing = $('#pubRing').val();
+            data.secRing = $('#secRing').val();
+
+
+            $.ajax({
+                url: this.action,
+                type:"PUT",
+                dataType: 'json',
+                data:data,
+                success:function (data, textStatus, jqXHR) {
+                    if ( data.error_code == 0) {
+                        toastr.success("success");
+                    } else {
+                        toastr.error(data.error_message);
+                        console.log(data.error_message);
+                    }
+
+                },
+                error:function (jqXHR, error, errorThrown) {
+
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+
+
+

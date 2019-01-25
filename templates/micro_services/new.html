@@ -1,0 +1,86 @@
+<div class="content">
+    <h3 class="wrapper-color">MicroService</h3>
+    <form id="service" action="/micro-services" method="POST">
+        <div class="form-group">
+            <input class="form-control  placeholder-no-fix" type="text" autocomplete="off"
+                   id="name" placeholder="ServiceName" name="name"/>
+        </div>
+
+        <div class="form-group">
+            <input class="form-control  placeholder-no-fix" type="text" autocomplete="off"
+                   id="summary"  placeholder="Summary" name="vummary"/>
+        </div>
+
+        <div class="form-group">
+            <input class="form-control  placeholder-no-fix" type="text" autocomplete="off"
+                   id="remark"  placeholder="Remark" name="remark"/>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-info form-submit">Create</button>
+            <button type="button" class="btn green form-submit micro-back">Back</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#service').on('submit', function(e){
+            e.preventDefault();
+
+            var data = {};
+            
+            data.name = $('#name').val();
+            data.remark = $('#remark').val();
+            data.summary = $('#summary').val();
+
+
+            if ($('#name').val() == ""){
+                toastr.warning("请输入ServiceName!");
+                $("#name").focus();
+                return false
+            }
+
+            if ($('#summary').val() == ""){
+                toastr.warning("请输入Summary!");
+                $("#summary").focus();
+                return false
+            }
+
+            if ($('#remark').val() == ""){
+                toastr.warning("remark!");
+                $("#remark").focus();
+                return false
+            }
+
+
+            $.ajax({
+                url: this.action,
+                type:'POST',
+                dataType: 'json',
+                data:data,
+                success:function (data, textStatus, jqXHR) {
+                    if ( data.error_code == 0) {
+                        toastr.success("Succeed");
+                        window.location.href = "/micro-services"
+                 
+                    } else {
+                        toastr.error(data.error_message);
+                        console.log(data.error_message);
+                    }
+
+                },
+                error:function (jqXHR, error, errorThrown) {
+
+                }
+            });
+            return false;
+        });
+
+        $(".micro-back").on("click",function () {
+            window.location.href = "/micro-services"
+
+        })
+    });
+</script>

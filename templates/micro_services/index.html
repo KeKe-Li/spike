@@ -1,0 +1,63 @@
+<div class="container">
+    <h4 class="wrapper-color">MicroService List</h4>
+    <h4><a href="/micro-services/new" class="btn btn-info">create</a></h4>
+<div class="table-responsive">
+    <table  class="table wrapper-color">
+        <tr>
+
+            <th>ID</th>
+            
+            <th>Name</th>
+            
+            <th>Remark</th>
+            
+            <th>Summary</th>
+            
+            <th>OPERATING</th>
+        </tr>
+        {{range .microServices}}
+        <tr>
+            <td>{{.ID}}</td>
+
+            <td>{{.Name}}</td>
+            
+            <td>{{.Remark}}</td>
+            
+            <td>{{.Summary}}</td>
+            
+            <td>
+                <button type="button" class="btn btn-danger btn-remove" data-url="/micro-services/{{.ID}}">删除</button>
+                <a href="/micro-services-edit/{{.ID}}" class="btn btn-warning">Edit</a>
+                <a href="/gpg-keys-show/{{.ID}}" class="btn btn-success">remote Key</a>
+            </td>
+        </tr>
+        {{end}}
+    </table>
+</div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".btn-remove").on('click', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            $.ajax({
+                url:  $(this).data("url"),
+                type: 'DELETE',
+                success: function (data, textStatus, jqXHR) {
+                    if (data.error_code == 0) {
+                        _this.parent().parent().remove();
+                    } else {
+                        toastr.error(data.error_message);
+                        console.log(data.error_message);
+                    }
+                },
+                error: function (jqXHR, error, errorThrown) {
+
+                }
+            });
+
+        });
+    });
+</script>

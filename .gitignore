@@ -1,0 +1,11 @@
+.idea
+/test
+gin-bin
+spike.iml
+app.conf
+app.pid
+glide.yaml
+spike
+file.zip
+sqlite
+spike.tar.gz
