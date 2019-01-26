@@ -1,5 +1,5 @@
 #### spike
-用的是Golang 1.112版本的go module,配合Golang的web框架gin实现的.
+`spike`项目用的是`Golang 1.112`版本的go module,配合Golang的web框架gin实现的.
 
 <p align="center">
 <img width="100" align="center" src="public/images/logo.png" />
