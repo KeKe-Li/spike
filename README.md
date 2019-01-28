@@ -35,7 +35,7 @@ ENTRYPOINT ["./main"]
 ```bash
 > docker build -t main.go .
 
- ---> 797daa9977c6
+---> 797daa9977c6
 Successfully built 797daa9977c6
 Successfully tagged main.go:latest
 ```
