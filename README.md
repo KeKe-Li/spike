@@ -1,6 +1,4 @@
 #### spike
-`spike`项目用的是`Golang 1.112`版本的go module,配合Golang的web框架gin实现的.
-
 <p align="center">
 <img width="100" align="center" src="public/images/logo.png" />
 </p>
@@ -10,6 +8,8 @@
 <a href="https://twitter.com/perfactsen"><img src="https://img.shields.io/badge/twitter-keke-green.svg?style=flat&colorA=009df2"></a>
 <a href="https://www.zhihu.com/people/sencoed.com/activities"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-keke-green.svg?style=flat&colorA=009df2"></a>
 </p>
+
+`spike`项目用的是`Golang 1.112`版本的go module,配合Golang的web框架gin实现的.
 
 #### Docker
 
