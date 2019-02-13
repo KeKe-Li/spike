@@ -9,7 +9,7 @@
 <a href="https://www.zhihu.com/people/sencoed.com/activities"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-keke-green.svg?style=flat&colorA=009df2"></a>
 </p>
 
-`spike`项目用的是`Golang 1.112`版本的go module,配合Golang的web框架gin实现的.
+`spike`项目用的是`Golang 1.112`版本,本项目采用了go module,配合Golang的web框架gin实现的.
 
 #### Docker
 
@@ -51,7 +51,7 @@ main.go                               latest              797daa9977c6        8 
 > docker run -p 8080:8080 -d main.go
 ```
 
-docker run -p 80:8080 oracle:latest　可以直接docker运行本地镜像启动go项目
+docker run -p 80:8080 oracle:latest　可以直接docker运行本地镜像启动go项目.
 
 
 #### Golang编程
