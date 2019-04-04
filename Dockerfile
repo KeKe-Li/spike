@@ -22,6 +22,7 @@ ADD . .
 
 RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike main.go
 
+# scratch空的基础镜像，最小的基础镜像
 FROM scratch as prod
 
 COPY --from=build /go/release/spike /
