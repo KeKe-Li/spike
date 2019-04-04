@@ -1,14 +1,14 @@
 package controllers
 
 import (
+	"fmt"
 	"strconv"
+	"net/http"
 
 	"spike/models"
 	"spike/helps/sql"
 
 	"github.com/gin-gonic/gin"
-	"fmt"
-	"net/http"
 )
 
 type NewsController struct {
