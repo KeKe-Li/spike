@@ -11,7 +11,8 @@ WORKDIR /go/cache
 ADD go.mod .
 ADD go.sum .
 
-RUN GO111MODULE=on go mod download
+# 构建缓存包含了该项所有的依赖起到加速构建的作用
+RUN go mod download
 
 #工作目录
 WORKDIR /go/release
