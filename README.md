@@ -12,7 +12,6 @@
 `spike`项目用的是`Golang 1.11.2`版本,本项目采用了go module,配合Golang的web框架gin实现的.
 
 #### Docker
-
 ```docker
 #母镜像
 FROM golang
