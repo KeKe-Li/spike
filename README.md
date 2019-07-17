@@ -116,6 +116,12 @@ docker中,go构建命令使用 `-ldflags="-s -w"`,在官方文档：Command_Line
 
 然后可以运行上面的普通镜像的部署,编译,部署,运行镜像就可以访问和使用了.
 
+看完这个Dockerfile的内容，可能你的第一感觉是不是把之前的两个Dockerfile合并在一块儿了，每个Dockerfile单独作为一个“阶段”！事实也是这样，但这个Docker也多了一些新的语法形式，用于建立各个“阶段”之间的联系。针对这样一个Dockerfile，我们应该知道以下几点：
+
+* 支持Multi-stage build的Dockerfile在以往的多个build阶段之间建立内在连接，让后一个阶段构建可以使用前一个阶段构建的产物，形成一条构建阶段的chain；
+* Multi-stages build的最终结果仅产生一个image，避免产生冗余的多个临时images或临时容器对象，这正是我们所需要的：我们只要结果。
+
+多阶段镜像构建可以让开发者通过一个Dockerfile，一次性地、更容易地构建出size较小的image，体验良好并且更容易接入CI/CD等自动化系统。
 
 #### Golang编程
 
