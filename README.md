@@ -53,6 +53,69 @@ spike                               latest              797daa9977c6        8 mi
 ```
 这样就可以直接docker运行本地镜像启动go项目.
 
+#### go mod使用docker镜像
+
+使用了go mod之后我们可以使用的docker镜像部署go mod的项目,镜像如下:
+
+```dockerfile
+#母镜像
+FROM golang:latest as build
+#维护者信息
+MAINTAINER keke
+
+ENV GOPROXY https://goproxy.io/
+# go module开启
+ENV GO111MODULE on
+
+WORKDIR /go/cache
+
+# 添加go mod
+ADD go.mod .
+ADD go.sum .
+
+# 构建缓存包含了该项所有的依赖起到加速构建的作用
+RUN go mod download
+
+#工作目录
+WORKDIR /go/release
+
+#将文件复制到镜像中
+ADD . .
+
+# ldflags中-s: 省略符号表和调试信息,-w: 省略DWARF符号表
+RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike main.go
+
+# scratch空的基础镜像，最小的基础镜像
+# busybox带一些常用的工具，方便调试， 以及它的一些扩展busybox:glibc
+# alpine另一个常用的基础镜像，带包管理功能，方便下载其它依赖的包
+FROM scratch as prod
+
+COPY --from=build /go/release/spike /
+
+EXPOSE 8080
+
+CMD ["/spike"]
+```
+这个项目有一些外部依赖，所以在开发的时候都已调整好，并且编译通过，在开发环境已经生成了两个文件go.mod、go.sum.
+
+在dockerfile的中，先启动module模式，且配置代理，因为有些墙外的包服务没有梯子的情况下也是无法下载回来的，这里的代理域名是通用的代理，有需要的也可以用。(这里需要注意下如果是私有仓库的包,可以不配置代理,直接下载拉取即可)
+
+指令`RUN go mod download`执行的时候，会构建一层缓存，包含了该项所有的依赖。之后再次提交的代码中，若是go.mod、go.sum没有变化，就会直接使用该缓存，起到加速构建的作用，也不用重复的去外网下载依赖了。若是这两个文件发生了变化，就会重新构建这个缓存分层。
+
+docker中,go构建命令使用 `-ldflags="-s -w"`,在官方文档：Command_Line里面说名了-s -w参数的意义，按需选择即可。
+-s: 省略符号表和调试信息
+-w: 省略DWARF符号表
+
+使用scratch镜像,golang:latest开发镜像构建好应用后，在使用scratch来包裹生成二进制程序。
+
+这里关于最小基础镜像，在docker里面有这几类：
+
+* scratch: 空的基础镜像，最小的基础镜像.
+* busybox: 带一些常用的工具，方便调试， 以及它的一些扩展busybox:glibc.
+* alpine: 另一个常用的基础镜像，带包管理功能，方便下载其它依赖的包.
+
+然后可以运行上面的普通镜像的部署,编译,部署,运行镜像就可以访问和使用了.
+
 
 #### Golang编程
 
