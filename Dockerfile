@@ -3,7 +3,7 @@ FROM golang:latest as build
 #维护者信息
 MAINTAINER keke
 
-ENV GOPROXY https://go.likeli.top
+ENV GOPROXY https://goproxy.io/
 # go module开启
 ENV GO111MODULE on
 
