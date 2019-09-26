@@ -83,7 +83,7 @@ WORKDIR /go/release
 ADD . .
 
 # ldflags中-s: 省略符号表和调试信息,-w: 省略DWARF符号表
-RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike main.go
+RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike .
 
 # scratch空的基础镜像，最小的基础镜像
 # busybox带一些常用的工具，方便调试， 以及它的一些扩展busybox:glibc
@@ -92,10 +92,19 @@ FROM scratch as prod
 
 COPY --from=build /go/release/spike /
 
+# 配置镜像的时间区
+COPY --from=build /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+# 配置镜像的证书
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+# 将构建的可执行文件复制到新镜像中
+COPY --from=build /go/release/spike /
+
 EXPOSE 8080
 
 CMD ["/spike"]
+
 ```
+
 这个项目有一些外部依赖，所以在开发的时候都已调整好，并且编译通过，在开发环境已经生成了两个文件go.mod、go.sum.
 
 在dockerfile的中，先启动module模式，且配置代理，因为有些墙外的包服务没有梯子的情况下也是无法下载回来的，这里的代理域名是通用的代理，有需要的也可以用。(这里需要注意下如果是私有仓库的包,可以不配置代理,直接下载拉取即可)
