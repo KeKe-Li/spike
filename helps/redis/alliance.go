@@ -6,16 +6,16 @@ import (
 
 type Alliance struct {
 	Redis *redis.Pool `json:"redis"`
-	Key   string `json:"key"`
+	Key   string      `json:"key"`
 }
 
 type Authority struct {
-	DisplayName string //属性
-	Value       string //属性值
+	DisplayName string      //属性
+	Value       string      //属性值
 	Children    []Authority `json:"children"`
 }
 
-func (ctrl Alliance)GetAll() string {
+func (ctrl Alliance) GetAll() string {
 	value, err := redis.String(ctrl.Redis.Get().Do("get", ctrl.Key))
 	if err != nil {
 		return ""
@@ -23,7 +23,7 @@ func (ctrl Alliance)GetAll() string {
 	return value
 }
 
-func (ctrl Alliance)Save(value interface{}) error {
+func (ctrl Alliance) Save(value interface{}) error {
 	_, err := ctrl.Redis.Get().Do("set", ctrl.Key, value)
 	if err != nil {
 		return err
@@ -50,6 +50,3 @@ func Ucan(authorities []Authority, values ...string) bool {
 
 	return can
 }
-
-
-

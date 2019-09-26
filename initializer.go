@@ -1,26 +1,26 @@
 package main
 
 import (
-	"io/ioutil"
-	"fmt"
-	"os"
 	"flag"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"path/filepath"
 
-	"spike/models"
 	"spike/config"
 	"spike/helps/configurations"
+	"spike/models"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-const database =  "sqlite3"
+const database = "sqlite3"
 
-func init(){
+func init() {
 	var confFile string
 	var pidFile string
-	flag.Usage = func() 	{
+	flag.Usage = func() {
 		fmt.Println("Usage: " + os.Args[0] + " [options]\n\nOptions:")
 		fmt.Println("\t-conf \t the configuration file. (Default: app.conf)")
 		fmt.Println("\t-pid  \t the pid file. (Default: app.pid)")

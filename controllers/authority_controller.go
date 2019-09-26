@@ -1,15 +1,14 @@
 package controllers
 
 import (
-	"net/http"
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
 
 	redis_authories "spike/helps/redis"
 
-	"github.com/unrolled/render"
 	"github.com/gin-gonic/gin"
-
+	"github.com/unrolled/render"
 )
 
 type AuthorityController struct {
@@ -20,15 +19,15 @@ const (
 	AuthorityKey = "ALLIANCE::AUTHORITY"
 )
 
-func (ctrl AuthorityController)New(c *gin.Context) {
+func (ctrl AuthorityController) New(c *gin.Context) {
 	ctrl.Render.HTML(c.Writer, http.StatusOK, "authority/index", nil, render.HTMLOptions{Layout: "authority/templates"})
 }
 
-func (ctrl AuthorityController)All(c *gin.Context) {
+func (ctrl AuthorityController) All(c *gin.Context) {
 	resp := ctrl.NewResponse()
-	allianceRedis := redis_authories.Alliance{Redis:ctrl.RedisPool, Key:AuthorityKey}
+	allianceRedis := redis_authories.Alliance{Redis: ctrl.RedisPool, Key: AuthorityKey}
 	authories := make([]redis_authories.Authority, 0)
-	s:=allianceRedis.GetAll()
+	s := allianceRedis.GetAll()
 	err := json.Unmarshal([]byte(s), &authories)
 	if err != nil {
 		resp.ErrorCode = 1
@@ -59,7 +58,7 @@ func (ctrl AuthorityController) Save(c *gin.Context) {
 		c.JSON(http.StatusOK, resp)
 		return
 	}
-	allianceRedis := redis_authories.Alliance{Redis:ctrl.RedisPool, Key:AuthorityKey}
+	allianceRedis := redis_authories.Alliance{Redis: ctrl.RedisPool, Key: AuthorityKey}
 	err = allianceRedis.Save(string(data))
 	if err != nil {
 		resp.ErrorCode = 1

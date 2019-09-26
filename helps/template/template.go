@@ -1,14 +1,14 @@
 package template
 
 import (
-	"time"
 	"html/template"
+	"time"
 )
 
 var AppHelpers = template.FuncMap{
 	"unescaped": unescaped,
-	"date": date,
-	"time": dateTime,
+	"date":      date,
+	"time":      dateTime,
 }
 
 func unescaped(x string) interface{} {

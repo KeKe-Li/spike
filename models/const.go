@@ -1,6 +1,5 @@
 package models
 
-
 type NewsState int
 
 const (

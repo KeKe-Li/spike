@@ -1,11 +1,11 @@
 package redis
 
 import (
-	"testing"
-	"fmt"
 	"earlydata.com/gopher/configurations"
 	"earlydata.com/gopher/connection-pool"
 	"encoding/json"
+	"fmt"
+	"testing"
 )
 
 func TestUcan(t *testing.T) {
@@ -22,7 +22,7 @@ func TestUcan(t *testing.T) {
 	redisConf.MaxIdle = 10
 	redisConf.IdleTimeout = 20000000000
 	redispool := connection_pool.NewRedisPool(redisConf)
-	alliance := Alliance{Redis:redispool, Key:"ALLIANCE::AUTHORITY"}
+	alliance := Alliance{Redis: redispool, Key: "ALLIANCE::AUTHORITY"}
 	data := alliance.GetAll()
 	authorities := make([]Authority, 0)
 	json.Unmarshal([]byte(data), &authorities)

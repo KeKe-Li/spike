@@ -9,7 +9,7 @@
 <a href="https://www.zhihu.com/people/sencoed.com/activities"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-keke-green.svg?style=flat&colorA=009df2"></a>
 </p>
 
-`spike`项目用的是`Golang 1.11.2`版本,本项目采用了go module,配合Golang的web框架gin实现的.
+`spike`项目用的是`Golang 1.13 `版本,本项目采用了go module,配合Golang的web框架gin实现的.
 
 #### Docker
 ```docker
@@ -122,6 +122,88 @@ docker中,go构建命令使用 `-ldflags="-s -w"`,在官方文档：Command_Line
 * Multi-stages build的最终结果仅产生一个image，避免产生冗余的多个临时images或临时容器对象，这正是我们所需要的：我们只要结果。
 
 多阶段镜像构建可以让开发者通过一个Dockerfile，一次性地、更容易地构建出size较小的image，体验良好并且更容易接入CI/CD等自动化系统。
+
+此外我们如果有私有仓库或者需要加代理请求的一些依赖包的时候需要配置下:
+```markdown
+export GO111MODULE=on
+export GOPROXY=https://goproxy.io,https://goproxy.cn,direct
+export GOPRIVATE=*.private.com
+```
+
+```markdown
+> vim .gitconfig
+
+  1 [core]
+  2         excludesfile = /Users/admin/.gitignore_global
+  3 [difftool "sourcetree"]
+  4         cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  5         path =
+  6 [mergetool "sourcetree"]
+  7         cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh     \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  8         trustExitCode = true
+  9 [user]
+ 10         name =  keke
+ 11         email = keke@gmail.com
+ 12 [url "git@gitlab.private.com:"]
+ 13         insteadOf = https://gitlab.private.com/
+ 14 [commit]
+ 15         template = /Users/admin/.stCommitMsg
+
+```
+这样配置之后,获取和更新项目配置就很容易了.
+
+然后运行编译镜像:
+```bash
+> docker build -f Dockerfile -t spike .
+
+Sending build context to Docker daemon  27.73MB
+Step 1/15 : FROM golang:latest as build
+ ---> be63d15101cb
+Step 2/15 : MAINTAINER keke
+ ---> Using cache
+ ---> fcb5345e4040
+Step 3/15 : ENV GOPROXY https://goproxy.io/
+ ---> Using cache
+ ---> d74dd0afd035
+Step 4/15 : ENV GO111MODULE on
+ ---> Using cache
+ ---> 5ad5d9294ca4
+Step 5/15 : WORKDIR /go/cache
+ ---> Using cache
+ ---> 6a605b340a37
+Step 6/15 : ADD go.mod .
+ ---> Using cache
+ ---> 5d3be7a578e7
+Step 7/15 : ADD go.sum .
+ ---> Using cache
+ ---> c4f0eea31116
+Step 8/15 : RUN go mod download
+ ---> Using cache
+ ---> 498b2c431379
+Step 9/15 : WORKDIR /go/release
+ ---> Using cache
+ ---> b222afc81572
+Step 10/15 : ADD . .
+ ---> b81cfca15c9e
+Step 11/15 : RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike main.go
+ ---> Running in 0175b591d3de
+Removing intermediate container 0175b591d3de
+ ---> 2c437221b943
+Step 12/15 : FROM scratch as prod
+ ---> 
+Step 13/15 : COPY --from=build /go/release/spike /
+ ---> 1e90af4df19b
+Step 14/15 : EXPOSE 8080
+ ---> Running in 1c6cd437956d
+Removing intermediate container 1c6cd437956d
+ ---> 4e00c5871017
+Step 15/15 : CMD ["/spike"]
+ ---> Running in b5fa9af34a72
+Removing intermediate container b5fa9af34a72
+ ---> 999d49ca5aad
+Successfully built 999d49ca5aad
+```
+这样镜像就编译成功了,可以开始使用了.
 
 #### Golang编程
 

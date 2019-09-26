@@ -40,7 +40,7 @@ func (ctrl GpgKeysController) Show(c *gin.Context) {
 
 func (ctrl GpgKeysController) Detail(c *gin.Context) {
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 0)
-	gpgKey := models.GpgKey{ID:uint(id)}
+	gpgKey := models.GpgKey{ID: uint(id)}
 	err := ctrl.DB.First(&gpgKey).Error
 	if err != nil {
 		ctrl.Render.Text(c.Writer, http.StatusOK, err.Error())
@@ -70,9 +70,7 @@ func (ctrl GpgKeysController) New(c *gin.Context) {
 
 func (ctrl GpgKeysController) Create(c *gin.Context) {
 
-
 }
-
 
 func (ctrl GpgKeysController) Edit(c *gin.Context) {
 
@@ -98,14 +96,14 @@ func (ctrl GpgKeysController) Update(c *gin.Context) {
 	resp := ctrl.NewResponse()
 
 	armor, err := strconv.ParseBool(c.PostForm("armor"))
-	if err !=nil{
+	if err != nil {
 		ctrl.Render.Text(c.Writer, http.StatusOK, err.Error())
 		return
 	}
 	comment := c.PostForm("comment")
 	email := c.PostForm("email")
 	id, err := strconv.ParseUint(c.Param("id"), 10, 0)
-	if err != nil{
+	if err != nil {
 		ctrl.Render.Text(c.Writer, http.StatusOK, err.Error())
 		return
 	}
@@ -168,4 +166,3 @@ func (ctrl GpgKeysController) Delete(c *gin.Context) {
 		ctrl.Render.JSON(c.Writer, http.StatusOK, resp)
 	}
 }
-
