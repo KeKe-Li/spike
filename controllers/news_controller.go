@@ -2,11 +2,11 @@ package controllers
 
 import (
 	"fmt"
-	"strconv"
 	"net/http"
+	"strconv"
 
-	"spike/models"
 	"spike/helps/sql"
+	"spike/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -87,97 +87,95 @@ func (ctrl NewsController) List(c *gin.Context) {
 		Data     interface{} `json:"data"`
 		PageInfo interface{} `json:"page_info"`
 	}{
-		Data:n,
-		PageInfo:pagination,
+		Data:     n,
+		PageInfo: pagination,
 	}
 
 	resp.ErrorCode = 0
 	resp.Data = result
-	c.JSON(http.StatusOK,resp)
+	c.JSON(http.StatusOK, resp)
 
 }
 
-func (ctrl NewsController) Show(c *gin.Context){
-
+func (ctrl NewsController) Show(c *gin.Context) {
 
 }
 
-
-func (ctrl NewsController) Publish(c *gin.Context){
+func (ctrl NewsController) Publish(c *gin.Context) {
 	resp := ctrl.NewResponse()
 
-	id ,err := strconv.ParseUint(c.Param("id"),10,64)
-	if err != nil{
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
 		resp.ErrorMessage = err.Error()
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 
-	req := &struct {ID uint64}{ID:id}
+	req := &struct{ ID uint64 }{ID: id}
 	n := &models.News{}
-	err = ctrl.DB.Model(n).First(n,req.ID).Error
-	if err != nil{
+	err = ctrl.DB.Model(n).First(n, req.ID).Error
+	if err != nil {
 		resp.ErrorMessage = err.Error()
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 
-	if n.State == int(models.Pendding){
+	if n.State == int(models.Pendding) {
 		resp.ErrorMessage = "news state is pendding"
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 
-	err = ctrl.DB.Model(&models.News{}).Where("id=?",req.ID).Update("state",models.Pushlish).Error
-	if err != nil{
+	err = ctrl.DB.Model(&models.News{}).Where("id=?", req.ID).Update("state", models.Pushlish).Error
+	if err != nil {
 		resp.ErrorMessage = err.Error()
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 	resp.ErrorCode = 0
-	c.JSON(http.StatusOK,resp)
+	c.JSON(http.StatusOK, resp)
 }
 
-func (ctrl NewsController) Offline(c *gin.Context){
+func (ctrl NewsController) Offline(c *gin.Context) {
 	resp := ctrl.NewResponse()
 
-	id,err := strconv.ParseUint(c.Param("id"),10,64)
-	if err != nil{
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
 		resp.ErrorMessage = err.Error()
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 
-	req := &struct {ID uint64}{ID:id}
+	req := &struct{ ID uint64 }{ID: id}
 
 	n := &models.News{}
 
-	err = ctrl.DB.Model(n).First(n,req.ID).Error
-	if err != nil{
+	err = ctrl.DB.Model(n).First(n, req.ID).Error
+	if err != nil {
 		resp.ErrorMessage = err.Error()
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 
-	if n.State == int(models.Pushlish){
+	if n.State == int(models.Pushlish) {
 		resp.ErrorMessage = "news state is publish"
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 
-	err = ctrl.DB.Model(&models.News{}).Where("id=? AND state=?",req.ID,models.Pushlish).
-		Update("state",models.OffLine).Error
-	if err != nil{
+	err = ctrl.DB.Model(&models.News{}).Where("id=? AND state=?", req.ID, models.Pushlish).
+		Update("state", models.OffLine).Error
+	if err != nil {
 		resp.ErrorMessage = err.Error()
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 
 	resp.ErrorCode = 0
-	c.JSON(http.StatusOK,resp)
+	c.JSON(http.StatusOK, resp)
 }
 
-func (ctrl NewsController) Create(c *gin.Context){
+func (ctrl NewsController) Create(c *gin.Context) {
 	resp := ctrl.NewResponse()
 
 	title := c.PostForm("title")
@@ -187,26 +185,24 @@ func (ctrl NewsController) Create(c *gin.Context){
 	author := c.PostForm("author")
 	imageUrl := c.PostForm("imageUrl")
 
-
 	news := models.News{
-		Title: title,
-		Summary:summary,
-		Body:body,
-		Code:code,
-		Author:author,
-		ImageUrl:imageUrl,
+		Title:    title,
+		Summary:  summary,
+		Body:     body,
+		Code:     code,
+		Author:   author,
+		ImageUrl: imageUrl,
 	}
 
 	err := ctrl.DB.Create(&news).Error
-	if err != nil{
+	if err != nil {
 		resp.ErrorCode = 1
 		resp.ErrorMessage = err.Error()
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 
 	resp.ErrorCode = 0
-	c.JSON(http.StatusOK,resp)
-
+	c.JSON(http.StatusOK, resp)
 
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitRoutes(engine *gin.RouterGroup, appCtrl controllers.ApplicationController) {
+func InitRoute(engine *gin.RouterGroup, appCtrl controllers.ApplicationController) {
 	router := engine.Group("")
 	{
 		//gpgKeys
@@ -32,13 +32,12 @@ func InitRoutes(engine *gin.RouterGroup, appCtrl controllers.ApplicationControll
 		router.PUT("/micro-services/:id", microServicesCtrl.Update)
 		router.DELETE("/micro-services/:id", microServicesCtrl.Delete)
 
-
 		userCtrl := controllers.UserController{appCtrl}
-		router.GET("/user",userCtrl.Index)
-		router.POST("/user",userCtrl.Create)
+		router.GET("/user", userCtrl.Index)
+		router.POST("/user", userCtrl.Create)
 
 		newsCtrl := controllers.NewsController{appCtrl}
-		router.GET("/news",newsCtrl.List)
+		router.GET("/news", newsCtrl.List)
 		//router.GET("/news-show/:id", newsCtrl.Show)
 		router.PUT("/news/publish/:id", newsCtrl.Publish)
 		//router.PUT("/news/offline/:id", newsCtrl.OffLine)
@@ -48,4 +47,3 @@ func InitRoutes(engine *gin.RouterGroup, appCtrl controllers.ApplicationControll
 	}
 
 }
-

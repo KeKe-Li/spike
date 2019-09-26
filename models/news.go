@@ -21,7 +21,6 @@ type News struct {
 	ShareImageUrl string `json:"share_image_url" gorm:"-"`
 }
 
-
-func (m *News) TableName() string{
+func (m *News) TableName() string {
 	return "news"
 }

@@ -8,10 +8,10 @@ import (
 )
 
 type ApplicationConfig struct {
-	ENV          string
-	Port         string
-	DB     	     *gorm.DB
-	Render       *render.Render
-	Mysql        *configurations.Mysql
-	Sqlite       string
+	ENV    string
+	Port   string
+	DB     *gorm.DB
+	Render *render.Render
+	Mysql  *configurations.Mysql
+	Sqlite string
 }

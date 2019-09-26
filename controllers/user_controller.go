@@ -16,14 +16,14 @@ func (ctrl UserController) Index(c *gin.Context) {
 	var users []models.User
 
 	err := ctrl.DB.Model(&models.User{}).Find(&users).Error
-	if err != nil{
+	if err != nil {
 		resp.ErrorCode = 1
 		resp.ErrorMessage = err.Error()
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 	resp.ErrorCode = 0
-	c.JSON(http.StatusOK,resp)
+	c.JSON(http.StatusOK, resp)
 	return
 }
 
@@ -34,20 +34,19 @@ func (ctrl UserController) Create(c *gin.Context) {
 	email := c.PostForm("email")
 	encryptedPassword := c.PostForm("encryptedPassword")
 
-
 	user := models.User{
-		Name: name,
-		Email:email,
-		EncryptedPassword:encryptedPassword,
+		Name:              name,
+		Email:             email,
+		EncryptedPassword: encryptedPassword,
 	}
 
 	err := ctrl.DB.Model(&user).Error
-	if err != nil{
+	if err != nil {
 		resp.ErrorCode = 1
 		resp.ErrorMessage = err.Error()
-		c.JSON(http.StatusOK,resp)
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 	resp.ErrorCode = 0
-	c.JSON(http.StatusOK,resp)
+	c.JSON(http.StatusOK, resp)
 }

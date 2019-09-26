@@ -9,7 +9,7 @@
 <a href="https://www.zhihu.com/people/sencoed.com/activities"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-keke-green.svg?style=flat&colorA=009df2"></a>
 </p>
 
-`spike`项目用的是`Golang 1.11.2`版本,本项目采用了go module,配合Golang的web框架gin实现的.
+`spike`项目用的是`Golang 1.13 `版本,本项目采用了go module,配合Golang的web框架gin实现的.
 
 #### Docker
 ```docker
@@ -122,6 +122,35 @@ docker中,go构建命令使用 `-ldflags="-s -w"`,在官方文档：Command_Line
 * Multi-stages build的最终结果仅产生一个image，避免产生冗余的多个临时images或临时容器对象，这正是我们所需要的：我们只要结果。
 
 多阶段镜像构建可以让开发者通过一个Dockerfile，一次性地、更容易地构建出size较小的image，体验良好并且更容易接入CI/CD等自动化系统。
+
+此外我们如果有私有仓库或者需要加代理请求的一些依赖包的时候需要配置下:
+```markdown
+export GO111MODULE=on
+export GOPROXY=https://goproxy.io,https://goproxy.cn,direct
+export GOPRIVATE=*.private.com
+```
+
+```markdown
+> vim .gitconfig
+
+  1 [core]
+  2         excludesfile = /Users/admin/.gitignore_global
+  3 [difftool "sourcetree"]
+  4         cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  5         path =
+  6 [mergetool "sourcetree"]
+  7         cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh     \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  8         trustExitCode = true
+  9 [user]
+ 10         name =  keke
+ 11         email = keke@gmail.com
+ 12 [url "git@gitlab.private.com:"]
+ 13         insteadOf = https://gitlab.private.com/
+ 14 [commit]
+ 15         template = /Users/admin/.stCommitMsg
+
+```
+这样配置之后,获取和更新项目配置就很容易了.
 
 #### Golang编程
 
