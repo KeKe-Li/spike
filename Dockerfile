@@ -23,13 +23,20 @@ WORKDIR /go/release
 ADD . .
 
 # ldflags中-s: 省略符号表和调试信息,-w: 省略DWARF符号表
-RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike main.go
+RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike .
 
 # scratch空的基础镜像，最小的基础镜像
 # busybox带一些常用的工具，方便调试， 以及它的一些扩展busybox:glibc
 # alpine另一个常用的基础镜像，带包管理功能，方便下载其它依赖的包
 FROM scratch as prod
 
+COPY --from=build /go/release/spike /
+
+# 配置镜像的时间区
+COPY --from=build /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+# 配置镜像的证书
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+# 将构建的可执行文件复制到新镜像中
 COPY --from=build /go/release/spike /
 
 EXPOSE 8080
