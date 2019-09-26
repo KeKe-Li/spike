@@ -156,52 +156,78 @@ export GOPRIVATE=*.private.com
 ```bash
 > docker build -f Dockerfile -t spike .
 
-Sending build context to Docker daemon  27.73MB
-Step 1/15 : FROM golang:latest as build
+Sending build context to Docker daemon  27.94MB
+Step 1/18 : FROM golang:latest as build
  ---> be63d15101cb
-Step 2/15 : MAINTAINER keke
+Step 2/18 : MAINTAINER keke
  ---> Using cache
- ---> fcb5345e4040
-Step 3/15 : ENV GOPROXY https://goproxy.io/
- ---> Using cache
- ---> d74dd0afd035
-Step 4/15 : ENV GO111MODULE on
- ---> Using cache
- ---> 5ad5d9294ca4
-Step 5/15 : WORKDIR /go/cache
- ---> Using cache
- ---> 6a605b340a37
-Step 6/15 : ADD go.mod .
- ---> Using cache
- ---> 5d3be7a578e7
-Step 7/15 : ADD go.sum .
- ---> Using cache
- ---> c4f0eea31116
-Step 8/15 : RUN go mod download
- ---> Using cache
- ---> 498b2c431379
-Step 9/15 : WORKDIR /go/release
- ---> Using cache
- ---> b222afc81572
-Step 10/15 : ADD . .
- ---> b81cfca15c9e
-Step 11/15 : RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike main.go
- ---> Running in 0175b591d3de
-Removing intermediate container 0175b591d3de
- ---> 2c437221b943
-Step 12/15 : FROM scratch as prod
+ ---> 9c15ac5391c9
+Step 3/18 : ENV GOPROXY https://goproxy.io/
+ ---> Running in 554c68a34b25
+Removing intermediate container 554c68a34b25
+ ---> 1fd761145c9f
+Step 4/18 : ENV GO111MODULE on
+ ---> Running in ab4b62e5ca0f
+Removing intermediate container ab4b62e5ca0f
+ ---> 49eb1ddeecfa
+Step 5/18 : WORKDIR /go/cache
+ ---> Running in 1b0ac2e50f8e
+Removing intermediate container 1b0ac2e50f8e
+ ---> 300c1af8833d
+Step 6/18 : ADD go.mod .
+ ---> 3f93208402e7
+Step 7/18 : ADD go.sum .
+ ---> 0ca487979fbd
+Step 8/18 : RUN go mod download
+ ---> Running in 7ce0d994e202
+go: finding github.com/fvbock/endless v0.0.0-20170109170031-447134032cb6
+go: finding gopkg.in/yaml.v2 v2.2.2
+go: finding github.com/golang/protobuf v1.2.0
+go: finding github.com/jinzhu/gorm v1.9.2
+go: finding github.com/ugorji/go/codec v0.0.0-20181206144755-e72634d4d386
+go: finding github.com/mattn/go-isatty v0.0.4
+go: finding github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a
+go: finding github.com/mattn/go-sqlite3 v1.10.0
+go: finding github.com/unrolled/render v0.0.0-20180914162206-b9786414de4d
+go: finding github.com/BurntSushi/toml v0.3.1
+go: finding github.com/gin-gonic/contrib v0.0.0-20181101072842-54170a7b0b4b
+go: finding github.com/gin-gonic/gin v1.3.0
+go: finding github.com/garyburd/redigo v1.6.0
+go: finding gopkg.in/go-playground/validator.v8 v8.18.2
+go: finding github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7
+go: finding gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405
+Removing intermediate container 7ce0d994e202
+ ---> b992949a532e
+Step 9/18 : WORKDIR /go/release
+ ---> Running in 5705c728bba2
+Removing intermediate container 5705c728bba2
+ ---> 78a099cbb46a
+Step 10/18 : ADD . .
+ ---> 55c28e43a2e6
+Step 11/18 : RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike .
+ ---> Running in 07af5e5dd2cf
+Removing intermediate container 07af5e5dd2cf
+ ---> 49a3d84e4670
+Step 12/18 : FROM scratch as prod
  ---> 
-Step 13/15 : COPY --from=build /go/release/spike /
- ---> 1e90af4df19b
-Step 14/15 : EXPOSE 8080
- ---> Running in 1c6cd437956d
-Removing intermediate container 1c6cd437956d
- ---> 4e00c5871017
-Step 15/15 : CMD ["/spike"]
- ---> Running in b5fa9af34a72
-Removing intermediate container b5fa9af34a72
- ---> 999d49ca5aad
-Successfully built 999d49ca5aad
+Step 13/18 : COPY --from=build /go/release/spike /
+ ---> d96e494782fc
+Step 14/18 : COPY --from=build /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ ---> b2c81502bc8e
+Step 15/18 : COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+ ---> d70aaaf82f60
+Step 16/18 : COPY --from=build /go/release/spike /
+ ---> 97dd96b760f4
+Step 17/18 : EXPOSE 8080
+ ---> Running in b0129a1ae043
+Removing intermediate container b0129a1ae043
+ ---> 088bdf206407
+Step 18/18 : CMD ["/spike"]
+ ---> Running in d593765e9432
+Removing intermediate container d593765e9432
+ ---> e8febeee66ee
+Successfully built e8febeee66ee
+Successfully tagged spike:latest
 ```
 这样镜像就编译成功了,可以开始使用了.
 
