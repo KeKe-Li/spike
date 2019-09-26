@@ -152,6 +152,59 @@ export GOPRIVATE=*.private.com
 ```
 这样配置之后,获取和更新项目配置就很容易了.
 
+然后运行编译镜像:
+```bash
+> docker build -f Dockerfile -t spike .
+
+Sending build context to Docker daemon  27.73MB
+Step 1/15 : FROM golang:latest as build
+ ---> be63d15101cb
+Step 2/15 : MAINTAINER keke
+ ---> Using cache
+ ---> fcb5345e4040
+Step 3/15 : ENV GOPROXY https://goproxy.io/
+ ---> Using cache
+ ---> d74dd0afd035
+Step 4/15 : ENV GO111MODULE on
+ ---> Using cache
+ ---> 5ad5d9294ca4
+Step 5/15 : WORKDIR /go/cache
+ ---> Using cache
+ ---> 6a605b340a37
+Step 6/15 : ADD go.mod .
+ ---> Using cache
+ ---> 5d3be7a578e7
+Step 7/15 : ADD go.sum .
+ ---> Using cache
+ ---> c4f0eea31116
+Step 8/15 : RUN go mod download
+ ---> Using cache
+ ---> 498b2c431379
+Step 9/15 : WORKDIR /go/release
+ ---> Using cache
+ ---> b222afc81572
+Step 10/15 : ADD . .
+ ---> b81cfca15c9e
+Step 11/15 : RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o spike main.go
+ ---> Running in 0175b591d3de
+Removing intermediate container 0175b591d3de
+ ---> 2c437221b943
+Step 12/15 : FROM scratch as prod
+ ---> 
+Step 13/15 : COPY --from=build /go/release/spike /
+ ---> 1e90af4df19b
+Step 14/15 : EXPOSE 8080
+ ---> Running in 1c6cd437956d
+Removing intermediate container 1c6cd437956d
+ ---> 4e00c5871017
+Step 15/15 : CMD ["/spike"]
+ ---> Running in b5fa9af34a72
+Removing intermediate container b5fa9af34a72
+ ---> 999d49ca5aad
+Successfully built 999d49ca5aad
+```
+这样镜像就编译成功了,可以开始使用了.
+
 #### Golang编程
 
 觉得此文章不错，支持我的话可以给我star ，:star:！如果有问题可以加我的微信`Sen0676`,也可以加入我们的交流群一起交流goalng技术！
