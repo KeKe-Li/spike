@@ -112,6 +112,7 @@ CMD ["/spike"]
 指令`RUN go mod download`执行的时候，会构建一层缓存，包含了该项所有的依赖。之后再次提交的代码中，若是go.mod、go.sum没有变化，就会直接使用该缓存，起到加速构建的作用，也不用重复的去外网下载依赖了。若是这两个文件发生了变化，就会重新构建这个缓存分层。
 
 docker中,go构建命令使用 `-ldflags="-s -w"`,在官方文档：Command_Line里面说名了-s -w参数的意义，按需选择即可。
+
 -s: 省略符号表和调试信息
 -w: 省略DWARF符号表
 
@@ -125,7 +126,9 @@ docker中,go构建命令使用 `-ldflags="-s -w"`,在官方文档：Command_Line
 
 然后可以运行上面的普通镜像的部署,编译,部署,运行镜像就可以访问和使用了.
 
-看完这个Dockerfile的内容，可能你的第一感觉是不是把之前的两个Dockerfile合并在一块儿了，每个Dockerfile单独作为一个“阶段”！事实也是这样，但这个Docker也多了一些新的语法形式，用于建立各个“阶段”之间的联系。针对这样一个Dockerfile，我们应该知道以下几点：
+看完这个Dockerfile的内容，可能你的第一感觉是不是把之前的两个Dockerfile合并在一块儿了，每个Dockerfile单独作为一个“阶段”！但是这个Docker也多了一些新的语法形式，用于建立各个“阶段”之间的联系。
+
+针对这样一个Dockerfile，我们应该知道以下几点：
 
 * 支持Multi-stage build的Dockerfile在以往的多个build阶段之间建立内在连接，让后一个阶段构建可以使用前一个阶段构建的产物，形成一条构建阶段的chain；
 * Multi-stages build的最终结果仅产生一个image，避免产生冗余的多个临时images或临时容器对象，这正是我们所需要的：我们只要结果。
